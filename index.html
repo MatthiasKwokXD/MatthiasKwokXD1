@@ -147,3 +147,151 @@ else
 	good "CVE-2014-6278 (lcamtuf bug #2)"
 fi
 rm -rf $tmpdir
+/*
+    MSP v1.0
+    Created by Julio Milian
+    July 17. 2016
+ 
+    Program will calculate the amount due
+    after a month of cellular usage.
+*/
+ 
+#include <iostream>
+#include <iomanip>
+using namespace std;
+ 
+int main() {
+ 
+    double aPrice = 39.99;
+    double bPrice = 59.99;
+    double cPrice = 69.99;
+    double mins = 0.0;
+    double aMins = 0.0;
+    double bMins = 0.0;
+    double total = 0.0;
+    double atotal = 0.0;
+    double btotal = 0.0;
+    char input;
+ 
+    cout << "Which monthly package do you currently have? ";
+    cin >> input;
+    cout << "How many minutes did you use within the month? ";
+    cin >> mins;
+    // switch case start -------------------------------------------------------------------------
+    switch (input)
+    {
+    case 'A':
+    case 'a':
+        cout << "\nYou have chosen plan A!\n";
+        total = total + aPrice;
+        cout << "\nMonthly charge is $" << total << endl;
+        aMins = 450 - mins;
+ 
+        if (aMins > 0)
+            cout << "You still had minutes left over in the month!" << endl;
+        else {
+            aMins = aMins * -1;
+            aMins = aMins * 0.45;
+            total = total + aMins;
+        }
+        cout << "Your total due balance for this month is $" << total << "\n\n";
+ 
+        //check if plan b is cheaper
+        btotal = bPrice;
+        mins = 900 - mins;
+        if (mins < 0) {
+            mins = mins * -1;
+            mins = mins * 0.40;
+            btotal = btotal + mins;
+        }
+ 
+        if (btotal < total && btotal < cPrice) {
+            cout << "Plan B would have been cheaper for the amount of minutes you used.\n";
+            cout << "The total using plan B would have been $" << btotal << endl;
+            btotal = total - btotal;
+            cout << "You would have saved $" << btotal << "\n\n";
+        }
+        else
+            if (btotal > cPrice) {
+                cout << "Plan C would have been cheaper!\n";
+                total = btotal - total;
+                total = total * -1;
+                cout << "You would have saved $" << total << endl;
+                cout << "Your monthly charge would have been $" << cPrice << endl;
+            }
+            else
+                cout << "Plan A is the cheapest with the minutes you used!\n";
+        break;
+ 
+    //CASE B - PLAN B --------------------------------------------------------------------------
+ 
+    case 'B':
+    case 'b':
+        aMins = mins;
+        cout << "You have chosen plan B!\n";
+        total = total + bPrice;
+        cout << "\nMonthly charge is " << total << endl;
+        mins = 900 - mins;
+        if (mins > 0)
+            cout << "You still had minutes left over in the month!" << endl;
+        else {
+            mins = mins * -1;
+            mins = mins * 0.40;
+            total = total + mins;
+        }
+        cout << "Your total due balance for this month is " << total << endl;
+ 
+        //check if plan a is cheaper
+        atotal = aPrice;
+        aMins = 450 - aMins;
+        if (aMins < 0) {
+            aMins = aMins * -0.45;
+            atotal = atotal + aMins;
+        }
+        if (atotal < total && atotal < cPrice) {
+            cout << "\nPlan A would have been cheaper this month!\n";
+            atotal = total - atotal;
+            cout << "It would have saved you $" << atotal << endl;
+            cout << "Your total for Plan A would have been $" << atotal << endl;
+        }
+ 
+        //check if plan c is cheaper
+        if (total > cPrice){
+            cout << "\nPlan C would have been cheaper!\n";
+            cPrice = total - cPrice;
+            cout << "You would have saved $" << cPrice << endl;
+        }
+        break;
+ 
+        //CASE C - PLAN C --------------------------------------------------------------------------
+ 
+    case 'C':
+    case 'c':
+        total = cPrice;
+        cout << "\nMonthly charge is " << total << endl;
+        cout << "Your total due balance for this month is " << total << endl;
+        //check if plan a is cheaper
+        if (mins <= 494) {
+            aMins = 450 - mins;
+            aMins = aMins * -0.45;
+            atotal = 49.99 + aMins;
+            atotal = total - atotal;
+            cout << "\nPlan A would have been cheaper.\n";
+            cout << "You would have saved $" << atotal << endl;
+        }
+        //check if plan b was cheaper
+        if (mins <= 924) {
+            bMins = 900 - mins;
+            bMins = bMins * -0.4;
+            btotal = 59.99 + bMins;
+            btotal = total - btotal;
+            cout << "\nPlan B would have been cheaper.\n";
+            cout << "You would have saved $" << btotal << endl;
+        }
+        break;
+    default:
+        cout << "\nPlease select A, B, or C.\n\n";
+        break;
+    }//end switch
+    return 0;
+}//end main
